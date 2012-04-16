@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+    xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd" >
+
+    <bean
+        id="timeGreetServiceImpl"
+        class="com.hascode.tutorial.blueprint_wiring_example.TimeGreetServiceImpl" >
+        <argument ref="timeService"/>
+        <argument ref="sampleService"/>
+    </bean>
+    
+    <bean id="activator" class="com.hascode.tutorial.blueprint_wiring_example.Activator"/>
+    
+    <reference
+        id="sampleService"
+        activation="eager"
+        availability="mandatory"
+        interface="com.hascode.tutorial.hascode_osgi_service.api.SampleService" >
+    </reference>
+
+    <reference
+        id="timeService"
+        activation="eager"
+        availability="mandatory"
+        interface="com.hascode.tutorial.blueprint_service_export.SimpleTimeService" >
+    </reference>
+
+    <service
+        id="timeGreetService"
+        interface="com.hascode.tutorial.blueprint_wiring_example.TimeGreetService"
+        ref="timeGreetServiceImpl">
+        <registration-listener ref="activator" registration-method="onRegisterService" unregistration-method="onUnregisterService"></registration-listener>
+    </service>
+
+</blueprint>
